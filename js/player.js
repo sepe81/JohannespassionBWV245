@@ -1,25 +1,30 @@
-let midi = null;
-let part = null;
-let synth = null;
+let currentPart = null;
+let currentSynth = null;
+let currentMidi = null;
 
 /* ============================= */
-/* MIDI LADEN */
+/* MIDI LADEN UND PLAY */
 /* ============================= */
 async function loadMidi(url) {
-    await Tone.start(); // AudioContext aktivieren beim ersten Klick
+    // Alte Part/Synth sauber stoppen
+    stop();
 
-    stop(); // vorherige Wiedergabe stoppen
+    // AudioContext aktivieren (Browser-Sicherheit)
+    if (Tone.context.state !== 'running') {
+        await Tone.start();
+    }
 
+    // MIDI-Datei laden
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
-    midi = new Midi(arrayBuffer);
+    currentMidi = new Midi(arrayBuffer);
 
-    // Einfach alle Noten zusammen in einen PolySynth packen
-    synth = new Tone.PolySynth(Tone.Synth).toDestination();
+    // PolySynth erstellen
+    currentSynth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-    // Part für alle Tracks zusammenführen
+    // Alle Tracks zusammenführen in eine Notenliste
     let notes = [];
-    midi.tracks.forEach(track => {
+    currentMidi.tracks.forEach(track => {
         track.notes.forEach(n => {
             notes.push({
                 time: n.time,
@@ -31,36 +36,44 @@ async function loadMidi(url) {
     });
 
     // Part erstellen
-    part = new Tone.Part((time, note) => {
-        synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+    currentPart = new Tone.Part((time, note) => {
+        currentSynth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
     }, notes);
 
-    part.start(0);
+    currentPart.start(0);
 
+    // Transport vorbereiten
     Tone.Transport.stop();
     Tone.Transport.position = 0;
+
+    // Direkt abspielen
+    play();
 }
 
 /* ============================= */
 /* PLAY / STOP */
 /* ============================= */
 async function play() {
-    if (!part) return;
+    if (!currentPart) return;
+
     if (Tone.context.state !== 'running') {
         await Tone.start(); // AudioContext aktivieren
     }
+
     Tone.Transport.start();
 }
 
 function stop() {
     Tone.Transport.stop();
     Tone.Transport.position = 0;
-    if (part) {
-        part.dispose();
-        part = null;
+
+    if (currentPart) {
+        currentPart.dispose();
+        currentPart = null;
     }
-    if (synth) {
-        synth.dispose();
-        synth = null;
+    if (currentSynth) {
+        currentSynth.dispose();
+        currentSynth = null;
     }
+    currentMidi = null;
 }
