@@ -478,10 +478,18 @@ audio {
 
 <script src="lyrics.js"></script>
 <script>
-// Inject lyrics rows from lyrics.js into the table
+// Inject lyrics rows and enrich PDF links with chorale title
 document.querySelectorAll("tr[data-nr]").forEach(row => {
     const nr = Number(row.dataset.nr);
     if (!LYRICS[nr]) return;
+
+    const incipit = LYRICS[nr].split("\n")[0].replace(/,$/, "");
+    const link = row.cells[0].querySelector("a");
+    if (link) {
+        link.setAttribute("aria-label", link.getAttribute("aria-label").replace(" – Notenblatt", ` \u201e${incipit}\u201c – Notenblatt`));
+        link.title = incipit;
+    }
+
     const lyricsRow = document.createElement("tr");
     lyricsRow.className = "lyrics-row";
     lyricsRow.dataset.for = String(nr);
