@@ -34,6 +34,10 @@
         <input type="checkbox" id="voice-autoplay">
         Autoplay
     </label>
+    <label class="voice-autoplay-label">
+        <input type="checkbox" id="voice-repeat">
+        Wiederholen
+    </label>
     <span class="voice-pref-hint" id="voice-pref-hint" aria-live="polite"></span>
 </div>
 
@@ -191,6 +195,7 @@ const players = document.querySelectorAll("audio");
 
 players.forEach(player => {
     player.addEventListener("play", () => {
+        player.loop = repeatCheckbox.checked;
         players.forEach(other => {
             if (other !== player) other.pause();
         });
@@ -212,9 +217,11 @@ let preferredVoice = localStorage.getItem("preferredVoice") || "";
 const voiceButtons = document.querySelectorAll(".voice-btn");
 const voicePrefHint = document.getElementById("voice-pref-hint");
 const autoplayCheckbox = document.getElementById("voice-autoplay");
+const repeatCheckbox = document.getElementById("voice-repeat");
 
 // Default is enabled; only store when explicitly unchecked
 autoplayCheckbox.checked = localStorage.getItem("voiceAutoplay") !== "false";
+repeatCheckbox.checked = localStorage.getItem("voiceRepeat") === "true";
 
 const focusVoice = new URLSearchParams(location.search).get("fokus");
 const focusBar = document.getElementById("focus-link-bar");
@@ -227,8 +234,9 @@ function updateVoiceUI() {
         btn.setAttribute("aria-pressed", String(active));
     });
     const autoplayOn = autoplayCheckbox.checked;
+    const repeatOn = repeatCheckbox.checked;
     voicePrefHint.textContent = preferredVoice && autoplayOn
-        ? "→ Beim Öffnen des Notenblatts startet " + VOICE_LABEL[preferredVoice] + " nach 3\u00a0Sekunden"
+        ? "→ Beim Öffnen des Notenblatts startet " + VOICE_LABEL[preferredVoice] + " nach 3\u00a0Sekunden" + (repeatOn ? " (mit Wiederholung)" : "")
         : "";
     updateFocusLink();
 }
@@ -236,6 +244,11 @@ function updateVoiceUI() {
 autoplayCheckbox.addEventListener("change", () => {
     localStorage.setItem("voiceAutoplay", autoplayCheckbox.checked);
     cancelAutoPlay();
+    updateVoiceUI();
+});
+
+repeatCheckbox.addEventListener("change", () => {
+    localStorage.setItem("voiceRepeat", repeatCheckbox.checked);
     updateVoiceUI();
 });
 
