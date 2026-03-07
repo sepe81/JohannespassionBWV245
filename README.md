@@ -34,8 +34,9 @@ Wenn du die Noten nicht zur Hand hast:
 
 1. **Stimme vorauswählen:** Wähle oben auf der Seite deine Chorstimme in der Vorauswahl aus
 2. **Autoplay aktivieren:** Stell sicher, dass die Autoplay-Option angehakt ist
-3. **Choral starten:** Klick auf die **Nummer** des gewünschten Chorals (z. B. **7**, **9**, **17** usw.)
-4. Die Partitur wird automatisch eingeblendet und nach kurzer Verzögerung hörst du deine Singstimme
+3. *(Optional)* **Wiederholen aktivieren:** Wenn du den Choral mehrfach hintereinander üben möchtest, hake auch „Wiederholen“ an – das Audio läuft dann in Schleife, bis du manuell pausierst
+4. **Choral starten:** Klick auf die **Nummer** des gewünschten Chorals (z. B. **7**, **9**, **17** usw.)
+5. Die Partitur öffnet sich in einem neuen Tab und nach kurzer Verzögerung hörst du deine Singstimme
 
 ---
 
