@@ -2,7 +2,7 @@
 
 Übungs-Audio-Player für Chorsänger zum Erlernen der Choräle aus Johann Sebastian Bachs Johannespassion BWV 245 nach Stimmlage (S/A/T/B).
 
-**🔗 Live-Version:** https://ledez-man.github.io/JohannespassionBWV245/
+**🔗 Live-Version:** <https://ledez-man.github.io/JohannespassionBWV245/>
 
 ---
 
@@ -53,10 +53,12 @@ Wenn du die Noten nicht zur Hand hast:
 ## Für Entwickler
 
 **Audio-Dateien hinzufügen:**
+
 - Dateiformat: `audio/nr{NUMMER}-{STIMME}.m4a`
 - Beispiel: `audio/nr7-S.m4a`, `audio/nr9-A.m4a`
 
 **Neuen Choral hinzufügen:**
+
 1. M4A-Dateien für alle Stimmlagen in `audio/` ablegen
 2. Tabellenzeile in `index.html` einfügen: `<tr data-nr="NUMMER">`
 3. Chortext in `lyrics.js` ergänzen
