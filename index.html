@@ -249,7 +249,7 @@ voiceButtons.forEach(btn => {
             if (preferredVoice) {
                 history.replaceState(null, "", `?fokus=${preferredVoice}`);
                 document.querySelector("table").dataset.voice = preferredVoice;
-                document.querySelector("thead th:nth-child(2)").textContent = VOICE_LABEL[preferredVoice];
+                document.querySelector(`thead th:nth-child(${VOICE_IDX[preferredVoice] + 2})`).textContent = VOICE_LABEL[preferredVoice];
             } else {
                 history.replaceState(null, "", "index.html");
                 delete document.querySelector("table").dataset.voice;
@@ -274,7 +274,7 @@ function updateFocusLink() {
 
 if (focusVoice && VOICE_IDX.hasOwnProperty(focusVoice)) {
     document.querySelector("table").dataset.voice = focusVoice;
-    document.querySelector("thead th:nth-child(2)").textContent = VOICE_LABEL[focusVoice];
+    document.querySelector(`thead th:nth-child(${VOICE_IDX[focusVoice] + 2})`).textContent = VOICE_LABEL[focusVoice];
     focusBar.removeAttribute("hidden");
     focusLink.href = "index.html";
     focusLink.textContent = "← Alle Stimmen anzeigen";
