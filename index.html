@@ -223,7 +223,8 @@ const repeatCheckbox = document.getElementById("voice-repeat");
 autoplayCheckbox.checked = localStorage.getItem("voiceAutoplay") !== "false";
 repeatCheckbox.checked = localStorage.getItem("voiceRepeat") === "true";
 
-const focusVoice = new URLSearchParams(location.search).get("fokus");
+const urlFocusVoice = new URLSearchParams(location.search).get("fokus");
+const focusVoice = urlFocusVoice || localStorage.getItem("focusVoice") || "";
 const focusBar = document.getElementById("focus-link-bar");
 const focusLink = document.getElementById("focus-link");
 
@@ -260,10 +261,12 @@ voiceButtons.forEach(btn => {
         updateVoiceUI();
         if (focusVoice) {
             if (preferredVoice) {
+                localStorage.setItem("focusVoice", preferredVoice);
                 history.replaceState(null, "", `?fokus=${preferredVoice}`);
                 document.querySelector("table").dataset.voice = preferredVoice;
                 document.querySelector(`thead th:nth-child(${VOICE_IDX[preferredVoice] + 2})`).textContent = VOICE_LABEL[preferredVoice];
             } else {
+                localStorage.removeItem("focusVoice");
                 history.replaceState(null, "", "index.html");
                 delete document.querySelector("table").dataset.voice;
             }
@@ -286,11 +289,13 @@ function updateFocusLink() {
 }
 
 if (focusVoice && VOICE_IDX.hasOwnProperty(focusVoice)) {
+    if (urlFocusVoice) localStorage.setItem("focusVoice", urlFocusVoice);
     document.querySelector("table").dataset.voice = focusVoice;
     document.querySelector(`thead th:nth-child(${VOICE_IDX[focusVoice] + 2})`).textContent = VOICE_LABEL[focusVoice];
     focusBar.removeAttribute("hidden");
     focusLink.href = "index.html";
     focusLink.textContent = "← Alle Stimmen anzeigen";
+    focusLink.addEventListener("click", () => localStorage.removeItem("focusVoice"), { once: true });
     preferredVoice = focusVoice;
     updateVoiceUI();
 }

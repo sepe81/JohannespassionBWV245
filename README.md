@@ -24,7 +24,8 @@ Wer beim Üben nur die eigene Stimme sehen möchte:
 3. Die URL wechselt zu `?fokus=S` (bzw. `A`, `T`, `B`) – nur die gewählte Spalte bleibt sichtbar
 4. Stimme kann jederzeit über die Buttons gewechselt werden; **„← Alle Stimmen anzeigen"** kehrt zur normalen Ansicht zurück
 
-Der Link lässt sich auch direkt teilen oder als Lesezeichen speichern.
+Der Link lässt sich direkt teilen oder als Lesezeichen speichern.
+Die Fokus-Ansicht bleibt auch nach einem Neu-Laden erhalten – „← Alle Stimmen anzeigen" beendet sie vollständig.
 
 ---
 
