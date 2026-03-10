@@ -3,6 +3,10 @@
 Practice audio player for choir singers learning Bach's Johannespassion BWV 245 by voice part (S/A/T/B).
 Deployed on GitHub Pages. No build step — open `index.html` directly in a browser.
 
+## Markdown conventions
+
+- Use one sentence per line when adding new text to Markdown files.
+
 ## Key conventions
 
 - Chorale numbers follow the **BG edition** (Bach-Gesellschaft), not the NBA (Neue Bach-Ausgabe).
