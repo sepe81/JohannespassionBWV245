@@ -240,8 +240,9 @@ function updateVoiceUI() {
     });
     const autoplayOn = autoplayCheckbox.checked;
     const repeatOn = repeatCheckbox.checked;
+    const repeatSuffix = repeatOn ? " (mit Wiederholung)" : "";
     voicePrefHint.textContent = preferredVoice && autoplayOn
-        ? "→ Beim Öffnen des Notenblatts startet " + VOICE_LABEL[preferredVoice] + " nach 3\u00a0Sekunden" + (repeatOn ? " (mit Wiederholung)" : "")
+        ? "→ Beim Öffnen des Notenblatts startet " + VOICE_LABEL[preferredVoice] + " nach 3\u00a0Sekunden" + repeatSuffix
         : "";
     updateFocusLink();
 }
