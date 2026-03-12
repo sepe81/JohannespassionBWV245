@@ -199,6 +199,15 @@ audio {
     font-size: 0.88rem;
     color: #7a6a58;
     flex-wrap: wrap;
+    border: none;
+    min-inline-size: 0;
+    padding: 0;
+}
+
+.voice-pref legend {
+    float: left;
+    margin: 0;
+    padding: 0;
 }
 
 .voice-btn {
