@@ -256,6 +256,9 @@ autoplayCheckbox.addEventListener("change", () => {
 
 repeatCheckbox.addEventListener("change", () => {
     localStorage.setItem("voiceRepeat", repeatCheckbox.checked);
+    // Apply immediately to the currently playing player
+    const activePlayer = Array.from(players).find(p => !p.paused);
+    if (activePlayer) activePlayer.loop = repeatCheckbox.checked;
     updateVoiceUI();
 });
 
