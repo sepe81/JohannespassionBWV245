@@ -199,6 +199,7 @@ const players = document.querySelectorAll("audio");
 
 players.forEach(player => {
     player.addEventListener("play", () => {
+        cancelAutoPlay();
         player.loop = repeatCheckbox.checked;
         players.forEach(other => {
             if (other !== player) other.pause();
