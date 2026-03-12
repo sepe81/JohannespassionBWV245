@@ -173,7 +173,8 @@ document.querySelectorAll("tr[data-nr]").forEach(row => {
     const nr = Number(row.dataset.nr);
     if (!LYRICS[nr]) return;
 
-    const incipit = LYRICS[nr].split("\n")[0].replace(/,$/, "");
+    const lines = LYRICS[nr].split("\n");
+    const incipit = lines[0].replace(/,$/, "");
     const link = row.cells[0].querySelector("a");
     if (link) {
         link.setAttribute("aria-label", link.getAttribute("aria-label").replace(" – Notenblatt", ` \u201e${incipit}\u201c – Notenblatt`));
@@ -186,7 +187,10 @@ document.querySelectorAll("tr[data-nr]").forEach(row => {
     lyricsRow.setAttribute("aria-hidden", "true");
     const td = document.createElement("td");
     td.colSpan = 5;
-    td.innerHTML = LYRICS[nr].replaceAll("\n", "<br>");
+    lines.forEach((line, i) => {
+        td.appendChild(document.createTextNode(String(line)));
+        if (i < lines.length - 1) td.appendChild(document.createElement("br"));
+    });
     lyricsRow.appendChild(td);
     row.after(lyricsRow);
 });
