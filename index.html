@@ -229,9 +229,11 @@ autoplayCheckbox.checked = localStorage.getItem("voiceAutoplay") !== "false";
 repeatCheckbox.checked = localStorage.getItem("voiceRepeat") === "true";
 
 const urlFocusVoice = new URLSearchParams(location.search).get("fokus");
-const focusVoice = urlFocusVoice || localStorage.getItem("focusVoice") || "";
+let focusVoice = urlFocusVoice || localStorage.getItem("focusVoice") || "";
 const focusBar = document.getElementById("focus-link-bar");
 const focusLink = document.getElementById("focus-link");
+const table = document.querySelector("table");
+function voiceTh(v) { return document.querySelector(`thead th:nth-child(${VOICE_IDX[v] + 2})`); }
 
 function updateVoiceUI() {
     voiceButtons.forEach(btn => {
@@ -267,30 +269,43 @@ voiceButtons.forEach(btn => {
         preferredVoice = btn.dataset.voice === preferredVoice ? "" : btn.dataset.voice;
         localStorage.setItem("preferredVoice", preferredVoice);
         cancelAutoPlay();
-        updateVoiceUI();
-        if (focusVoice) {
-            if (preferredVoice) {
-                localStorage.setItem("focusVoice", preferredVoice);
-                history.replaceState(null, "", `?fokus=${preferredVoice}`);
-                document.querySelector("table").dataset.voice = preferredVoice;
-                document.querySelector(`thead th:nth-child(${VOICE_IDX[preferredVoice] + 2})`).textContent = VOICE_LABEL[preferredVoice];
-            } else {
-                localStorage.removeItem("focusVoice");
-                history.replaceState(null, "", "index.html");
-                delete document.querySelector("table").dataset.voice;
-            }
-        }
+        if (focusVoice) applyFocus(preferredVoice);
+        else updateVoiceUI();
     });
 });
 
 updateVoiceUI();
 
 // --- Fokus-Modus ---
+function applyFocus(voice) {
+    if (focusVoice) {
+        voiceTh(focusVoice).textContent = focusVoice;
+        delete table.dataset.voice;
+    }
+    focusVoice = voice;
+    if (voice) {
+        localStorage.setItem("focusVoice", voice);
+        history.replaceState(null, "", `?fokus=${voice}`);
+        table.dataset.voice = voice;
+        voiceTh(voice).textContent = VOICE_LABEL[voice];
+    } else {
+        localStorage.removeItem("focusVoice");
+        history.replaceState(null, "", location.pathname);
+    }
+    updateVoiceUI();
+}
+
+focusLink.addEventListener("click", e => {
+    e.preventDefault();
+    applyFocus(focusVoice ? "" : preferredVoice);
+});
+
 function updateFocusLink() {
-    if (focusVoice) return;
-    if (preferredVoice) {
+    if (focusVoice) {
         focusBar.removeAttribute("hidden");
-        focusLink.href = `?fokus=${preferredVoice}`;
+        focusLink.textContent = "← Alle Stimmen anzeigen";
+    } else if (preferredVoice) {
+        focusBar.removeAttribute("hidden");
         focusLink.textContent = `Nur ${VOICE_LABEL[preferredVoice]} →`;
     } else {
         focusBar.setAttribute("hidden", "");
@@ -299,12 +314,8 @@ function updateFocusLink() {
 
 if (focusVoice && VOICE_IDX.hasOwnProperty(focusVoice)) {
     if (urlFocusVoice) localStorage.setItem("focusVoice", urlFocusVoice);
-    document.querySelector("table").dataset.voice = focusVoice;
-    document.querySelector(`thead th:nth-child(${VOICE_IDX[focusVoice] + 2})`).textContent = VOICE_LABEL[focusVoice];
-    focusBar.removeAttribute("hidden");
-    focusLink.href = "index.html";
-    focusLink.textContent = "← Alle Stimmen anzeigen";
-    focusLink.addEventListener("click", () => localStorage.removeItem("focusVoice"), { once: true });
+    table.dataset.voice = focusVoice;
+    voiceTh(focusVoice).textContent = VOICE_LABEL[focusVoice];
     preferredVoice = focusVoice;
     updateVoiceUI();
 }
