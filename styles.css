@@ -10,8 +10,12 @@
     --t-color: #c0522a;
     --b-color: #2a5e8c;
     --text: #2c1f14;
+    --muted: #7a6a58;
+    --muted-light: #9a8a78;
+    --hover-bg: #fdf5ec;
     --lyrics-bg: #fdf9f4;
     --lyrics-border: #c9a96e;
+    --lyrics-text: #4a3828;
 }
 
 * { box-sizing: border-box; }
@@ -59,7 +63,7 @@ body {
     max-width: 860px;
     margin: 0 auto 16px;
     font-size: 0.9rem;
-    color: #7a6a58;
+    color: var(--muted);
 }
 
 header {
@@ -80,7 +84,7 @@ h1 {
 header p {
     margin: 0;
     font-size: 0.85rem;
-    color: #7a6a58;
+    color: var(--muted);
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
@@ -91,7 +95,7 @@ footer {
     padding-top: 20px;
     border-top: 1px solid var(--border);
     font-size: 0.82rem;
-    color: #7a6a58;
+    color: var(--muted);
     line-height: 1.7;
 }
 
@@ -103,7 +107,7 @@ main {
     margin: 0 auto;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 16px rgba(44, 31, 20, 0.1);
+    box-shadow: 0 2px 16px rgb(44 31 20 / 0.1);
 }
 
 table {
@@ -164,7 +168,7 @@ td:first-child a:focus-visible {
     }
 
     tbody tr[data-nr]:hover td {
-        background: #fdf5ec;
+        background: var(--hover-bg);
     }
 }
 
@@ -181,7 +185,7 @@ audio {
     font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
     font-size: 0.95rem;
-    color: #4a3828;
+    color: var(--lyrics-text);
     line-height: 1.9;
     background: var(--lyrics-bg);
     border-left: 3px solid var(--lyrics-border);
@@ -197,7 +201,7 @@ audio {
     align-items: center;
     gap: 8px;
     font-size: 0.88rem;
-    color: #7a6a58;
+    color: var(--muted);
     flex-wrap: wrap;
     border: none;
     min-inline-size: 0;
@@ -249,14 +253,14 @@ audio {
     align-items: center;
     gap: 5px;
     font-size: 0.85rem;
-    color: #7a6a58;
+    color: var(--muted);
     cursor: pointer;
     margin-left: 4px;
 }
 
 .voice-pref-hint {
     font-size: 0.8rem;
-    color: #9a8a78;
+    color: var(--muted-light);
     font-style: italic;
 }
 
@@ -266,28 +270,17 @@ audio {
     margin: -16px auto 10px;
     font-size: 0.85rem;
     text-align: right;
-    color: #7a6a58;
+    color: var(--muted);
 }
 
 /* Fokus-Modus: alle 4 Audio-Spalten verstecken */
-table[data-voice] td:nth-child(2),
-table[data-voice] td:nth-child(3),
-table[data-voice] td:nth-child(4),
-table[data-voice] td:nth-child(5),
-table[data-voice] th:nth-child(2),
-table[data-voice] th:nth-child(3),
-table[data-voice] th:nth-child(4),
-table[data-voice] th:nth-child(5) { display: none; }
+table[data-voice] :is(td, th):nth-child(n+2) { display: none; }
 
 /* Nur die gewählte Spalte einblenden */
-table[data-voice="S"] td:nth-child(2),
-table[data-voice="S"] th:nth-child(2) { display: table-cell; }
-table[data-voice="A"] td:nth-child(3),
-table[data-voice="A"] th:nth-child(3) { display: table-cell; }
-table[data-voice="T"] td:nth-child(4),
-table[data-voice="T"] th:nth-child(4) { display: table-cell; }
-table[data-voice="B"] td:nth-child(5),
-table[data-voice="B"] th:nth-child(5) { display: table-cell; }
+table[data-voice="S"] :is(td, th):nth-child(2) { display: table-cell; }
+table[data-voice="A"] :is(td, th):nth-child(3) { display: table-cell; }
+table[data-voice="T"] :is(td, th):nth-child(4) { display: table-cell; }
+table[data-voice="B"] :is(td, th):nth-child(5) { display: table-cell; }
 
 /* Mobile Optimierung */
 @media (max-width: 768px) {
@@ -310,7 +303,7 @@ table[data-voice="B"] th:nth-child(5) { display: table-cell; }
         margin-bottom: 12px;
         border-radius: 6px;
         overflow: hidden;
-        box-shadow: 0 1px 6px rgba(44, 31, 20, 0.08);
+        box-shadow: 0 1px 6px rgb(44 31 20 / 0.08);
         border: 1px solid var(--border);
     }
 
@@ -350,7 +343,7 @@ table[data-voice="B"] th:nth-child(5) { display: table-cell; }
         width: auto;
         border-left: 3px solid var(--lyrics-border);
         background: var(--lyrics-bg);
-        color: #4a3828;
+        color: var(--lyrics-text);
         text-transform: none;
         font-family: Georgia, "Times New Roman", serif;
         font-style: italic;
