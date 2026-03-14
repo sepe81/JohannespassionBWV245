@@ -230,6 +230,7 @@ repeatCheckbox.checked = localStorage.getItem("voiceRepeat") === "true";
 
 const urlFocusVoice = new URLSearchParams(location.search).get("fokus");
 let focusVoice = urlFocusVoice || localStorage.getItem("focusVoice") || "";
+if (focusVoice && !VOICE_IDX.hasOwnProperty(focusVoice)) focusVoice = "";
 const focusBar = document.getElementById("focus-link-bar");
 const focusLink = document.getElementById("focus-link");
 const table = document.querySelector("table");
