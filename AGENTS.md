@@ -9,7 +9,7 @@ Deployed on GitHub Pages. No build step — open `index.html` directly in a brow
 
 ## Key conventions
 
-- Chorale numbers follow the **BG edition** (Bach-Gesellschaft), not the NBA (Neue Bach-Ausgabe).
+- Chorale numbers follow the **BG edition** (Bach-Gesellschaft), not the NBA (Neue Bach-Ausgabe) — because the printed scores our choir uses are BG-numbered.
 - Audio files: `audio/nr{NUMBER}-{PART}.m4a`
 - Lyrics texts live in `lyrics.js` as a plain JS object keyed by BG number; `index.html` injects them at runtime.
 - To add a chorale: add M4A files + a `<tr data-nr="NR">` row in `index.html`; add the text to `lyrics.js`.
