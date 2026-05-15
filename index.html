@@ -216,8 +216,12 @@ players.forEach(player => {
 });
 
 // Stimmenpräferenz
-const VOICE_IDX = { S: 0, A: 1, T: 2, B: 3 };
-const VOICE_LABEL = { S: "Sopran", A: "Alt", T: "Tenor", B: "Bass" };
+const VOICES = {
+    S: { label: "Sopran", col: 2 },
+    A: { label: "Alt",    col: 3 },
+    T: { label: "Tenor",  col: 4 },
+    B: { label: "Bass",   col: 5 },
+};
 let preferredVoice = localStorage.getItem("preferredVoice") || "";
 const voiceButtons = document.querySelectorAll(".voice-btn");
 const voicePrefHint = document.getElementById("voice-pref-hint");
@@ -230,11 +234,11 @@ repeatCheckbox.checked = localStorage.getItem("voiceRepeat") === "true";
 
 const urlFocusVoice = new URLSearchParams(location.search).get("fokus");
 let focusVoice = urlFocusVoice || localStorage.getItem("focusVoice") || "";
-if (focusVoice && !VOICE_IDX.hasOwnProperty(focusVoice)) focusVoice = "";
+if (focusVoice && !Object.hasOwn(VOICES, focusVoice)) focusVoice = "";
 const focusBar = document.getElementById("focus-link-bar");
 const focusLink = document.getElementById("focus-link");
 const table = document.querySelector("table");
-function voiceTh(v) { return document.querySelector(`thead th:nth-child(${VOICE_IDX[v] + 2})`); }
+function voiceTh(v) { return document.querySelector(`thead th:nth-child(${VOICES[v].col})`); }
 
 function updateVoiceUI() {
     voiceButtons.forEach(btn => {
@@ -246,7 +250,7 @@ function updateVoiceUI() {
     const repeatOn = repeatCheckbox.checked;
     const repeatSuffix = repeatOn ? " (mit Wiederholung)" : "";
     voicePrefHint.textContent = preferredVoice && autoplayOn
-        ? "→ Beim Öffnen des Notenblatts startet " + VOICE_LABEL[preferredVoice] + " nach 3\u00a0Sekunden" + repeatSuffix
+        ? "→ Beim Öffnen des Notenblatts startet " + VOICES[preferredVoice].label + " nach 3\u00a0Sekunden" + repeatSuffix
         : "";
     updateFocusLink();
 }
@@ -288,7 +292,7 @@ function applyFocus(voice) {
         localStorage.setItem("focusVoice", voice);
         history.replaceState(null, "", `?fokus=${voice}`);
         table.dataset.voice = voice;
-        voiceTh(voice).textContent = VOICE_LABEL[voice];
+        voiceTh(voice).textContent = VOICES[voice].label;
     } else {
         localStorage.removeItem("focusVoice");
         history.replaceState(null, "", location.pathname);
@@ -307,16 +311,16 @@ function updateFocusLink() {
         focusLink.textContent = "← Alle Stimmen anzeigen";
     } else if (preferredVoice) {
         focusBar.removeAttribute("hidden");
-        focusLink.textContent = `Nur ${VOICE_LABEL[preferredVoice]} →`;
+        focusLink.textContent = `Nur ${VOICES[preferredVoice].label} →`;
     } else {
         focusBar.setAttribute("hidden", "");
     }
 }
 
-if (focusVoice && VOICE_IDX.hasOwnProperty(focusVoice)) {
+if (focusVoice && Object.hasOwn(VOICES, focusVoice)) {
     if (urlFocusVoice) localStorage.setItem("focusVoice", urlFocusVoice);
     table.dataset.voice = focusVoice;
-    voiceTh(focusVoice).textContent = VOICE_LABEL[focusVoice];
+    voiceTh(focusVoice).textContent = VOICES[focusVoice].label;
     preferredVoice = focusVoice;
     updateVoiceUI();
 }
@@ -338,7 +342,7 @@ document.querySelectorAll("td:first-child a").forEach(link => {
         const row = link.closest("tr[data-nr]");
         if (!row) return;
         const audios = row.querySelectorAll("audio");
-        const audio = audios[VOICE_IDX[preferredVoice]];
+        const audio = audios[VOICES[preferredVoice].col - 2];
         if (!audio || !audio.src) return;
         autoPlayTimer = setTimeout(() => {
             players.forEach(p => { if (p !== audio) p.pause(); });
